@@ -1,0 +1,12 @@
+/*
+* .browserslist配置与package.json中browserslist存在其中之一即可
+*/
+
+
+
+# Browsers that we support
+
+last 1 version
+> 1%
+maintained node versions
+not ie <= 8
