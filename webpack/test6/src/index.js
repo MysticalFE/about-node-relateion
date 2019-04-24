@@ -13,8 +13,41 @@
 //   })
 // })
 
+// document.addEventListener('click', () => {
+//   import('./click').then(({default: fn}) => {
+//     fn()
+//   })
+// })
+
+
+/** 
+ * 代码预加载 
+ * https://webpack.docschina.org/guides/code-splitting/#%E9%A2%84%E5%8F%96-%E9%A2%84%E5%8A%A0%E8%BD%BD%E6%A8%A1%E5%9D%97-prefetch-preload-module-
+ * // webpackPrefetch: true prefetch 会在主要的js文件加载完毕后，网络资源空闲的时候会预先加载好
+ * // webpackPreload: true 会和核心代码并行加载，
+*/
+// document.addEventListener('click', () => {
+//   import(/*webpackPrefetch: true*/ './click').then(({default: fn}) => {
+//     fn()
+//   })
+// })
+
+// document.addEventListener('click', () => {
+//   const stratTimer = new Date().getTime()
+//   Promise.all([import('lodash'), import('./click')]).then(([{default: _}, {default: fn}]) => {
+//     console.log(_.join(['1', '2'], '~'))
+//     console.log(fn())
+//     const diff = new Date().getTime() - stratTimer;
+//     console.log(diff);
+//   })
+// })
+
 document.addEventListener('click', () => {
-  import('./click').then(({default: fn}) => {
-    fn()
+  const stratTimer = new Date().getTime()
+  Promise.all([import(/*webpackPrefetch: true*/'lodash'), import(/*webpackPrefetch: true*/'./click')]).then(([{default: _}, {default: fn}]) => {
+    console.log(_.join(['1', '2'], '~'))
+    console.log(fn())
+    const diff = new Date().getTime() - stratTimer;
+    console.log(diff);
   })
 })

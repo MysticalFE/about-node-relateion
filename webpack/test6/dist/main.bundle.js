@@ -4,7 +4,7 @@
 /******/ 		var chunkIds = data[0];
 /******/ 		var moreModules = data[1];
 /******/
-/******/
+/******/ 		var prefetchChunks = data[3] || [];
 /******/ 		// add "moreModules" to the modules object,
 /******/ 		// then flag all "chunkIds" as loaded and fire callback
 /******/ 		var moduleId, chunkId, i = 0, resolves = [];
@@ -21,7 +21,21 @@
 /******/ 			}
 /******/ 		}
 /******/ 		if(parentJsonpFunction) parentJsonpFunction(data);
+/******/ 		// chunk prefetching for javascript
+/******/ 		prefetchChunks.forEach(function(chunkId) {
+/******/ 			if(installedChunks[chunkId] === undefined) {
+/******/ 				installedChunks[chunkId] = null;
+/******/ 				var link = document.createElement('link');
 /******/
+/******/ 				if (__webpack_require__.nc) {
+/******/ 					link.setAttribute("nonce", __webpack_require__.nc);
+/******/ 				}
+/******/ 				link.rel = "prefetch";
+/******/ 				link.as = "script";
+/******/ 				link.href = jsonpScriptSrc(chunkId);
+/******/ 				document.head.appendChild(link);
+/******/ 			}
+/******/ 		});
 /******/ 		while(resolves.length) {
 /******/ 			resolves.shift()();
 /******/ 		}
@@ -43,7 +57,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "" + ({}[chunkId]||chunkId) + ".js"
+/******/ 		return __webpack_require__.p + "" + ({"lodash":"lodash"}[chunkId]||chunkId) + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -192,6 +206,7 @@
 /******/ 	var parentJsonpFunction = oldJsonpFunction;
 /******/
 /******/
+/******/ 	webpackJsonpCallback([[], {}, 0, ["lodash",0,1]]);
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = "./src/index.js");
 /******/ })
@@ -205,7 +220,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("/** \n * 代码懒加载\n * vue-router 路由懒加载 import(路由)\n*/\n// document.addEventListener('click', () => {\n//   import(/* webpackChunkName: 'use-lodash' */ 'lodash').then(_ => {\n//     console.log(_.join(['3','4']))\n//   })\n// })\n\ndocument.addEventListener('click', () => {\n  __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.bind(null, /*! ./click */ \"./src/click.js\")).then(({default: fn}) => {\n    fn()\n  })\n})\n\n//# sourceURL=webpack:///./src/index.js?");
+eval("/** \n * 所以 webpack 在打包过程中，是希望我们多写这种异步的代码，\n * 才能提升网站的性能，\n * 这也是为什么 webpack 的 splitChunks 中的 chunks 默认是 async，异步的\n*/\n/** \n * 代码懒加载\n * vue-router 路由懒加载 import(路由)\n*/\n// document.addEventListener('click', () => {\n//   import(/* webpackChunkName: 'use-lodash' */ 'lodash').then(_ => {\n//     console.log(_.join(['3','4']))\n//   })\n// })\n\n// document.addEventListener('click', () => {\n//   import('./click').then(({default: fn}) => {\n//     fn()\n//   })\n// })\n\n\n/** \n * 代码预加载 \n * https://webpack.docschina.org/guides/code-splitting/#%E9%A2%84%E5%8F%96-%E9%A2%84%E5%8A%A0%E8%BD%BD%E6%A8%A1%E5%9D%97-prefetch-preload-module-\n * // webpackPrefetch: true prefetch 会在主要的js文件加载完毕后，网络资源空闲的时候会预先加载好\n * // webpackPreload: true 会和核心代码并行加载，\n*/\n// document.addEventListener('click', () => {\n//   import(/*webpackPrefetch: true*/ './click').then(({default: fn}) => {\n//     fn()\n//   })\n// })\n\n// document.addEventListener('click', () => {\n//   const stratTimer = new Date().getTime()\n//   Promise.all([import('lodash'), import('./click')]).then(([{default: _}, {default: fn}]) => {\n//     console.log(_.join(['1', '2'], '~'))\n//     console.log(fn())\n//     const diff = new Date().getTime() - stratTimer;\n//     console.log(diff);\n//   })\n// })\n\ndocument.addEventListener('click', () => {\n  const stratTimer = new Date().getTime()\n  Promise.all([Promise.all(/*! import() */[__webpack_require__.e(\"lodash\"), __webpack_require__.e(0)]).then(__webpack_require__.t.bind(null, /*! lodash */ \"./node_modules/lodash/lodash.js\", 7)), __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ./click */ \"./src/click.js\"))]).then(([{default: _}, {default: fn}]) => {\n    console.log(_.join(['1', '2'], '~'))\n    console.log(fn())\n    const diff = new Date().getTime() - stratTimer;\n    console.log(diff);\n  })\n})\n\n\n//# sourceURL=webpack:///./src/index.js?");
 
 /***/ })
 
