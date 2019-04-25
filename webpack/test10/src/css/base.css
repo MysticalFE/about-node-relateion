@@ -1,0 +1,25 @@
+*,
+body {
+  margin: 0;
+  padding: 0;
+}
+.box {
+  height: 400px;
+  width: 400px;
+  border: 5px solid #000;
+  color: #000;
+}
+.box div {
+  width: 100px;
+  height: 100px;
+  float: left;
+}
+.box .ani1 {
+  background: url('./../assets/images/img01.jpg') no-repeat;
+}
+.box .ani2 {
+  background: url('./../assets/images/img02.jpg') no-repeat;
+}
+.box .ani3 {
+  background: url('./../assets/images/img03.jpg') no-repeat;
+}
