@@ -2,13 +2,12 @@ const webpack = require("webpack")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const CleanWebpackPlugin = require("clean-webpack-plugin")
 const path = require("path")
-
 module.exports = {
   entry: {
     app: './src/app.js'
   },
   output: {
-    path: path.resolve(__dirname + '..' + '/dist'),
+    path: path.resolve(__dirname + '..' + 'dist'),
   },
   module: {
     rules: [
@@ -55,7 +54,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'webpack test',
       filename: 'index.html',
-      template: path.resolve(__dirname + '..' + 'index.html'),
+      template: path.resolve('index.html'),
       minify: {
         collapseWhitespace: true
       }

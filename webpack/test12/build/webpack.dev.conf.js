@@ -1,6 +1,7 @@
 const webpack = require('webpack')
 const merge = require('webpack-merge')
-const baseConfig = require('./webpack.base.conf')
+const commonConfig = require('./webpack.base.conf.js')
+
 const path = require('path')
 
 const devConfig = {
@@ -9,7 +10,7 @@ const devConfig = {
     filename: '[name].js',
     chunkFilename: '[name].js'
   },
-  modules: {
+  module: {
     rules: [
       {
         test: /\.(sa|sc|c)ss$/,
@@ -18,22 +19,22 @@ const devConfig = {
           {
             loader: 'css-loader',
             options: {
-              importLoaders: 2 //该参数决定在一个css文件@import另外一个css文件时，允许加载的loader资源数量，1 => sass-loader   2 => postcss-loader  默认参数值为  0即不加载css-loader之前的loader
+              importLoaders: 2 // 在一个 css 中引入了另一个 css，也会执行之前两个 loader，即 postcss-loader 和 sass-loader
             }
           },
-          'postcss-loader', //为 css 加上浏览器前缀
-          'sass-loader', //将 sass 转为  css
+          'sass-loader', // 使用 sass-loader 将 scss 转为 css
+          'postcss-loader' // 使用 postcss 为 css 加上浏览器前缀
         ]
       }
     ]
   },
-  devtool: 'cheap-module-eval-source-map',
-  devServe: {
+  devtool: 'cheap-module-eval-soure-map',
+  devServer: {
     contentBase: path.join(__dirname, '../dist/'),
-    port: 9001,
+    port: 8000,
     hot: true,
     overlay: true,
-    pproxy: {
+    proxy: {
       '/comments': {
         target: 'https://m.weibo.cn',
         changeOrigin: true,
@@ -46,10 +47,9 @@ const devConfig = {
     historyApiFallback: true
   },
   plugins: [
-    //HotModuleReplacementPlugin 与 NamedModulesPlugin 一般都是成对出现的
-    new webpack.HotModuleReplacementPlugin(), //热更新模块
-    new webpack.NamedModulesPlugin()  //在热更新的时候直接返回更新文件名，而不是文件id
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin()
   ]
 }
 
-module.exports = merge(baseConfig, devConfig)
+module.exports = merge(commonConfig, devConfig)
